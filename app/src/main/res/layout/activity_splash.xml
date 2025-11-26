@@ -1,0 +1,19 @@
+<!-- app/src/main/res/layout/activity_splash.xml -->
+
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmins:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/splash_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <!-- Use the app icon for now; swap to real logo later -->
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_gravity="center"
+        android:contentDescription="@string/app_name"
+        android:src="@mipmap/ic_launcher" />
+
+</FrameLayout>

@@ -1,0 +1,19 @@
+<!-- app/src/main/res/layout/activity_lake_placeholder.xml -->
+
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmins:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lake_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#101620">
+
+    <TextView
+        android:id="@+id/label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lake (placeholder)"
+        android:textAppearance="?attr/textAppearanceHeadline5"
+        android:textColor="#FFFFFF"
+        android:layout_gravity="center"/>
+
+</FrameLayout>

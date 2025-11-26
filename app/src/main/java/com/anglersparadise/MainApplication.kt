@@ -1,3 +1,5 @@
+// app/src/main/java/com/angersparadise/MainApplication.kt
+
 package com.anglersparadise
 
 import android.app.Application
