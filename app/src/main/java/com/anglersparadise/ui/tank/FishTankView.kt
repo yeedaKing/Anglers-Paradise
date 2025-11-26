@@ -4,61 +4,99 @@ package com.anglersparadise.ui.tank
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Paint
+import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
 import com.anglersparadise.domain.model.Fish
-import kotlin.math.max
-import kotlin.math.min
+import kotlin.math.roundToInt
 
 class FishTankView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null
+    context: Context, attrs: AttributeSet? = null
 ) : View(context, attrs) {
 
     private var fish: List<Fish> = emptyList()
-    private val water = Paint().apply { color = 0xFF0F2438.toInt() }
-    private val fishPaint = Paint().apply { color = 0xFF8EE3F5.toInt() }
-    private val bubble = Paint().apply { color = 0x66FFFFFF.toInt() }
+    private var pendingFish: List<Fish>? = null
+
+    // Positions by fish id
+    private val xPos = mutableMapOf<Long, Float>()
+    private val yPos = mutableMapOf<Long, Float>()
+    private val speed = mutableMapOf<Long, Float>()
 
     fun setFish(list: List<Fish>) {
+        // If we don't have a measured size yet, defer initialization.
+        if (width == 0 || height == 0) {
+            fish = list
+            pendingFish = list
+            invalidate()
+            return
+        }
+        applyFishList(list)
+    }
+
+    private fun applyFishList(list: List<Fish>) {
         fish = list
+        val w = width.toFloat().coerceAtLeast(1f)
+        val h = height.toFloat().coerceAtLeast(1f)
+
+        // Initialize new fish positions safely
+        for (f in list) {
+            if (xPos[f.id] == null) {
+                xPos[f.id] = (-50f..w).random()
+                yPos[f.id] = (h * 0.2f .. h * 0.8f).random()
+                speed[f.id] = (1.2f..3.2f).random()
+            }
+        }
+        // Remove positions for fish no longer present
+        val ids = list.map { it.id }.toSet()
+        xPos.keys.toList().filter { it !in ids }.forEach { id ->
+            xPos.remove(id); yPos.remove(id); speed.remove(id)
+        }
         invalidate()
+    }
+
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        // If we had deferred data, initialize now that we have size.
+        pendingFish?.let {
+            applyFishList(it)
+            pendingFish = null
+        }
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
+        if (fish.isEmpty()) return
+
         val w = width.toFloat()
         val h = height.toFloat()
 
-        // Background water
-        canvas.drawRect(0f, 0f, w, h, water)
+        for (f in fish) {
+            val id = f.id
+            val vx = (speed[id] ?: 2f)
+            val newX = ((xPos[id] ?: -50f) + vx)
+            // Wrap with a little margin
+            xPos[id] = if (newX > w + 50f) -50f else newX
+            val y = yPos[id] ?: (h * 0.5f)
 
-        // Simple drift animation based on time
-        val t = System.currentTimeMillis() / 16f
+            // Scale sprite by fish size (1..5)
+            val base = dp(48f)
+            val incr = dp(8f) * (f.size.coerceIn(1, 5) - 1)
+            val spriteW = (base + incr).roundToInt().coerceAtLeast(1)
+            val spriteH = (base * 0.7f + incr * 0.7f).roundToInt().coerceAtLeast(1)
 
-        if (fish.isEmpty()) return
+            val bmp = SpriteProvider.get(context, f.species, spriteW, spriteH)
 
-        val rowH = h / max(1, min(6, fish.size))
-        fish.forEachIndexed { i, f ->
-            // x drifts left->right, y is per-row with slight bob
-            val speed = 0.6f + (f.id % 5) * 0.15f
-            val x = ((t * speed + (i * 90)) % (w + 80f)) - 40f
-            val yBase = i * rowH + rowH * 0.5f
-            val y = yBase + 10f * kotlin.math.sin((t + i * 20) / 16f)
-
-            val size = 14f + (f.size.coerceIn(1, 5) * 6f)
-            // Body (circle) + simple tail
-            canvas.drawCircle(x, y, size, fishPaint)
-            canvas.drawRect(x - size - 10f, y - 6f, x - size + 2f, y + 6f, fishPaint)
-
-            // Occasional bubble
-            val bx = x + size + 8f
-            val by = y - size - ((t + i * 10) % 40f)
-            if (by > 0) canvas.drawCircle(bx, by, 3f, bubble)
+            val left = xPos[id] ?: 0f
+            val top = y - spriteH / 2f
+            val dst = RectF(left, top, left + spriteW, top + spriteH)
+            canvas.drawBitmap(bmp, null, dst, null)
         }
 
-        // Schedule next frame
         postInvalidateOnAnimation()
+    }
+
+    private fun dp(px: Float): Float = px * resources.displayMetrics.density
+    private fun ClosedFloatingPointRange<Float>.random(): Float {
+        return (start + Math.random() * (endInclusive - start)).toFloat()
     }
 }
