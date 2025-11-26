@@ -17,83 +17,76 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.anglersparadise.databinding.ActivityLakeBinding
 import com.anglersparadise.ui.tank.FishTankActivity
 import kotlinx.coroutines.launch
-//import com.anglersparadise.databinding.ActivityLakePlaceholderBinding
 
-/**
- * Placeholder screen. Replace this with real Lake UI/logic later
- */
-
-enum class LakeState { IDLE, WAITING, HOOKED, CAUGHT, ESCAPED }
-
-class LakeViewModel : ViewModel() {
-    private val _state = MutableStateFlow(LakeState.IDLE)
-    val state = _state.asStateFlow()
-
-    private val _toast = MutableSharedFlow<String>(extraBufferCapacity = 4)
-    val toast = _toast.asSharedFlow()
-
-    private var waitJob: Job? = null
-
-    fun cast() {
-        if (_state.value != LakeState.IDLE) return
-        _state.value = LakeState.WAITING
-
-        waitJob?.cancel()
-        waitJob = viewModelScope.launch {
-            val delayMs = Random.nextLong(1500L, 4000L)
-            delay(delayMs)
-            if (_state.value == LakeState.WAITING) {
-                _state.value = LakeState.HOOKED
-                _toast.tryEmit("Fish on! Reel now!")
-            }
-        }
-    }
-    fun reel() {
-        when (_state.value) {
-            LakeState.HOOKED -> {
-                _state.value = LakeState.CAUGHT
-                _toast.tryEmit("You caught a fish.")
-            }
-            LakeState.WAITING -> {
-                _state.value = LakeState.ESCAPED
-                _toast.tryEmit("Too early-fish got away.")
-                viewModelScope.launch {
-                    delay(1200)
-                    resetToIdle()
-                }
-            }
-            else -> Unit
-        }
-    }
-    fun confirmCatchToTank() {
-        if (_state.value == LakeState.CAUGHT) {
-            // TODO: Add to repository when data layer is introduced
-            resetToIdle()
-        }
-    }
-    fun letGo() {
-        if (_state.value == LakeState.CAUGHT) {
-            resetToIdle()
-        }
-    }
-    private fun resetToIdle() {
-        waitJob?.cancel()
-        _state.value = LakeState.IDLE
-    }
-}
 class LakeActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityLakePlaceholderBinding
+
+    private lateinit var binding: ActivityLakeBinding
+    private val vm: LakeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLakePlaceholderBinding.inflate(layoutInflater)
+        binding = ActivityLakeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        // Nothing else yet
+
+        // Buttons
+        binding.btnCast.setOnClickListener { vm.cast() }
+        binding.btnReel.setOnClickListener { vm.reel() }
+        binding.btnPutInTank.setOnClickListener {
+            if (vm.state.value == LakeState.CAUGHT) {
+                vm.confirmCatchToTank()
+                Toast.makeText(this, "Added to tank (stub)", Toast.LENGTH_SHORT).show()
+            }
+        }
+        binding.btnLetGo.setOnClickListener {
+            if (vm.state.value == LakeState.CAUGHT) {
+                vm.letGo()
+                Toast.makeText(this, "Released", Toast.LENGTH_SHORT).show()
+            }
+        }
+        binding.btnGoToTank.setOnClickListener {
+            startActivity(Intent(this, FishTankActivity::class.java))
+        }
+
+        // Observe state and update UI
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    vm.state.collect { s ->
+                        binding.status.text = when (s) {
+                            LakeState.IDLE -> "Ready to cast."
+                            LakeState.WAITING -> "Waiting…"
+                            LakeState.HOOKED -> "Fish on!  Reel now!"
+                            LakeState.CAUGHT -> "You caught a fish."
+                            LakeState.ESCAPED -> "The fish got away."
+                        }
+                        updateEnabledButtons(s)
+                        binding.lakeCanvas.setLakeState(s)
+                        if (s == LakeState.HOOKED) vibrateOnHooked()
+                    }
+                }
+                launch {
+                    vm.toast.collect { msg ->
+                        Toast.makeText(this@LakeActivity, msg, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun updateEnabledButtons(s: LakeState) {
+        binding.btnCast.isEnabled = s == LakeState.IDLE
+        binding.btnReel.isEnabled = (s == LakeState.WAITING || s == LakeState.HOOKED)
+        binding.btnPutInTank.isEnabled = s == LakeState.CAUGHT
+        binding.btnLetGo.isEnabled = s == LakeState.CAUGHT
+    }
+
+    private fun vibrateOnHooked() {
+        val v = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        if (Build.VERSION.SDK_INT >= 26) {
+            v.vibrate(VibrationEffect.createOneShot(80, VibrationEffect.DEFAULT_AMPLITUDE))
+        } else {
+            @Suppress("DEPRECATION")
+            v.vibrate(80)
+        }
     }
 }
-
-
-
-
-
-

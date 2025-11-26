@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- app/src/main/res/layout/activity_lake.xml -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lake_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#101620">
+
+    <com.anglersparadise.ui.lake.LakeView
+        android:id="@+id/lakeCanvas"
+        android:layout_width="match_parent"
+        android:layout_height="260dp"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:id="@+id/status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ready to cast."
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:padding="4dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="8dp">
+
+        <Button
+            android:id="@+id/btnCast"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cast" />
+
+        <Space
+            android:layout_width="12dp"
+            android:layout_height="0dp" />
+
+        <Button
+            android:id="@+id/btnReel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Reel" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="8dp">
+
+        <Button
+            android:id="@+id/btnPutInTank"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Put in Tank"
+            android:enabled="false" />
+
+        <Space
+            android:layout_width="12dp"
+            android:layout_height="0dp" />
+
+        <Button
+            android:id="@+id/btnLetGo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Let Go"
+            android:enabled="false" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnGoToTank"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Go to Fish Tank"
+        android:layout_marginTop="16dp" />
+
+</LinearLayout>

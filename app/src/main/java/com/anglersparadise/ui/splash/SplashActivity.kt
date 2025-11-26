@@ -5,7 +5,7 @@ package com.anglersparadise.ui.splash
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.angersparadise.databinding.ActivitySplashBinding
+import com.anglersparadise.databinding.ActivitySplashBinding
 import com.anglersparadise.ui.lake.LakeActivity
 
 /**

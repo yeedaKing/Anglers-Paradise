@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- app/src/main/res/layout/activity_fish_tank.xml -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tank_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#0B1522">
+
+    <com.anglersparadise.ui.tank.FishTankView
+        android:id="@+id/tankCanvas"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:id="@+id/count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Fish in tank: 0"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:padding="4dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="8dp">
+
+        <Button
+            android:id="@+id/btnBackToLake"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Back to Lake"
+            android:layout_weight="1" />
+
+        <Space
+            android:layout_width="12dp"
+            android:layout_height="0dp" />
+
+        <Button
+            android:id="@+id/btnReleaseAll"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Release All"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+</LinearLayout>
