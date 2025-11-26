@@ -44,6 +44,17 @@
             android:layout_height="0dp" />
 
         <Button
+            android:id="@+id/btnOpenBasket"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Fish Basket"
+            android:layout_weight="1" />
+
+        <Space
+            android:layout_width="12dp"
+            android:layout_height="0dp" />
+
+        <Button
             android:id="@+id/btnReleaseAll"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

@@ -22,6 +22,10 @@ class FishTankActivity : AppCompatActivity() {
         binding = ActivityFishTankBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.btnOpenBasket.setOnClickListener {
+            FishBasketDialog().show(supportFragmentManager, "basket")
+        }
+
         binding.btnBackToLake.setOnClickListener { finish() }
 
         binding.btnReleaseAll.setOnClickListener {
