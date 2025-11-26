@@ -77,4 +77,13 @@ object FishRepository {
             }
         }
     }
+    fun clearHistory() {
+        _history.value = emptyList()
+        // keep tank as-is (ever-caught is independent)
+        scope.launch {
+            saveMutex.withLock {
+                TankStore.saveHistory(_history.value)
+            }
+        }
+    }
 }

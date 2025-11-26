@@ -30,6 +30,16 @@ class FishBasketDialog : DialogFragment() {
         binding.recycler.adapter = adapter
         binding.btnClose.setOnClickListener { dismiss() }
 
+        binding.btnClearHistory.setOnClickListener {
+            AlertDialog.Builder(requireContext())
+                .setTitle("Clear basket history?")
+                .setMessage("This removes the ever-caught list. Fish currently in the tank remain.")
+                .setPositiveButton("Yes") { _, _ ->
+                    com.anglersparadise.data.FishRepository.clearHistory()
+                }
+                .setNegativeButton("Cancel", null)
+                .show()
+        }
         return AlertDialog.Builder(requireContext())
             .setTitle("Fish Basket")
             .setView(binding.root)
