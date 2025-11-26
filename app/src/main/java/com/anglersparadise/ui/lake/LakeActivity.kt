@@ -1,5 +1,4 @@
 // app/src/main/java/com/anglersparadise/ui/lake/LakeActivity.kt
-
 package com.anglersparadise.ui.lake
 
 import android.content.Context
@@ -23,6 +22,9 @@ class LakeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLakeBinding
     private val vm: LakeViewModel by viewModels()
 
+    // Track last state so we vibrate only on transition to HOOKED
+    private var lastState: LakeState? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLakeBinding.inflate(layoutInflater)
@@ -34,7 +36,8 @@ class LakeActivity : AppCompatActivity() {
         binding.btnPutInTank.setOnClickListener {
             if (vm.state.value == LakeState.CAUGHT) {
                 vm.confirmCatchToTank()
-                Toast.makeText(this, "Added to tank (stub)", Toast.LENGTH_SHORT).show()
+                // Optional: remove this stub toast; ViewModel already emits one.
+                // Toast.makeText(this, "Added to tank (stub)", Toast.LENGTH_SHORT).show()
             }
         }
         binding.btnLetGo.setOnClickListener {
@@ -61,7 +64,12 @@ class LakeActivity : AppCompatActivity() {
                         }
                         updateEnabledButtons(s)
                         binding.lakeCanvas.setLakeState(s)
-                        if (s == LakeState.HOOKED) vibrateOnHooked()
+
+                        // Haptic only when transitioning into HOOKED
+                        if (lastState != LakeState.HOOKED && s == LakeState.HOOKED) {
+                            vibrateOnHook()
+                        }
+                        lastState = s
                     }
                 }
                 launch {
@@ -80,13 +88,12 @@ class LakeActivity : AppCompatActivity() {
         binding.btnLetGo.isEnabled = s == LakeState.CAUGHT
     }
 
-    private fun vibrateOnHooked() {
-        val v = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+    private fun vibrateOnHook() {
+        val vib = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         if (Build.VERSION.SDK_INT >= 26) {
-            v.vibrate(VibrationEffect.createOneShot(80, VibrationEffect.DEFAULT_AMPLITUDE))
+            vib.vibrate(VibrationEffect.createOneShot(40, VibrationEffect.DEFAULT_AMPLITUDE))
         } else {
-            @Suppress("DEPRECATION")
-            v.vibrate(80)
+            @Suppress("DEPRECATION") vib.vibrate(40)
         }
     }
 }

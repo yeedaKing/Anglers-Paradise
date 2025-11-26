@@ -20,16 +20,18 @@ class SplashActivity : AppCompatActivity() {
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Start transparent, fade in -> brief hold -> fade out -> go to Lake
+        // Start fully transparent
         binding.logo.alpha = 0f
+
+        // Fade in (500ms), hold (400ms), fade out (500ms), then go to Lake
         binding.logo.animate()
             .alpha(1f)
-            .setDuration(700)
+            .setDuration(500)
             .withEndAction {
                 binding.logo.animate()
+                    .setStartDelay(400)
                     .alpha(0f)
-                    .setStartDelay(300)
-                    .setDuration(700)
+                    .setDuration(500)
                     .withEndAction {
                         startActivity(Intent(this, LakeActivity::class.java))
                         finish()
