@@ -60,9 +60,12 @@ class LakeViewModel : ViewModel() {
 
     fun confirmCatchToTank() {
         if (_state.value == LakeState.CAUGHT) {
+            val species = com.anglersparadise.domain.model.SpeciesCatalog.randomName()
+            val size = com.anglersparadise.domain.model.SpeciesCatalog.randomSize()
             com.anglersparadise.data.FishRepository.addToTank(
-                com.anglersparadise.data.FishRepository.newFish()
+                com.anglersparadise.data.FishRepository.newFish(species, size)
             )
+            _toast.tryEmit("Added a $species (size $size) to tank.")
             resetToIdle()
         }
     }

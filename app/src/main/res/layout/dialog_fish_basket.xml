@@ -3,20 +3,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/basket_root"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="12dp">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler"
-        android:layout_width="match_parent"
-        android:layout_height="320dp"
-        android:overScrollMode="never" />
+    android:id="@+id/recycler"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:overScrollMode="never" />
 
     <Button
-        android:id="@+id/btnClose"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Close"
-        android:layout_marginTop="8dp" />
+    android:id="@+id/btnClose"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Close"
+    android:layout_marginTop="8dp" />
 </LinearLayout>
+

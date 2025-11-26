@@ -20,8 +20,6 @@ class FishBasketDialog : DialogFragment() {
     private var _binding: DialogFishBasketBinding? = null
     private val binding get() = _binding!!
     private lateinit var adapter: FishAdapter
-
-    // Share the TankViewModel with the host activity
     private val vm: TankViewModel by activityViewModels()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -40,21 +38,29 @@ class FishBasketDialog : DialogFragment() {
 
     override fun onStart() {
         super.onStart()
-        // Use the fragment's lifecycle (NOT viewLifecycleOwner inside onCreateDialog)
+
+        // Collect on the fragment lifecycle
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                FishRepository.history.collect { list -> adapter.submitList(list) }
+                FishRepository.history.collect { list ->
+                    adapter.submitList(list.toList())
+                }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val w = (resources.displayMetrics.widthPixels * 0.95f).toInt()
+        val h = (resources.displayMetrics.heightPixels * 0.75f).toInt()
+        dialog?.window?.setLayout(w, h)
     }
 
     private fun onFishClicked(f: Fish) {
         AlertDialog.Builder(requireContext())
             .setTitle(f.species)
             .setMessage("ID: ${f.id}\nSize: ${f.size}")
-            .setPositiveButton("Release from Tank") { _, _ ->
-                vm.releaseFish(f.id) // no-op if fish isn't currently in tank
-            }
+            .setPositiveButton("Release from Tank") { _, _ -> vm.releaseFish(f.id) }
             .setNegativeButton("Close", null)
             .show()
     }
@@ -64,3 +70,4 @@ class FishBasketDialog : DialogFragment() {
         super.onDestroyView()
     }
 }
+

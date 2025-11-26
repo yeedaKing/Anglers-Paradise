@@ -13,8 +13,7 @@ class MainApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        Log.d("MainApplication", "App started")
-        // TODO: In later steps, initialize any app-wide singletons (e.g., TankStore, FishRepository)
-        // TODO: Swap placeholder sprite provider when real assets arrive
+        com.anglersparadise.data.local.TankStore.init(this)
     }
+
 }

@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     kotlin("android")
+    kotlin("plugin.serialization") version "1.9.24"
 }
 
 android {
@@ -56,4 +57,11 @@ dependencies {
 
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.fragment:fragment-ktx:1.8.4")
+
+    // DataStore (preferences)
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
+
+    // Kotlinx serialization for simple JSON encode/decode
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+
 }

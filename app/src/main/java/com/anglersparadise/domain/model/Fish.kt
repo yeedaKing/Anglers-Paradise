@@ -2,6 +2,9 @@
 
 package com.anglersparadise.domain.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Fish(
     val id: Long,
     val species: String = "Common Fish",
