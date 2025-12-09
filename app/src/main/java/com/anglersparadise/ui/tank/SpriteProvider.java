@@ -6,19 +6,6 @@ import android.content.Context;
 import android.graphics.*;
 import android.util.LruCache;
 
-/*
-fish_bluegill.png,
-fish_bass.png,
-fish_carp.png,
-fish_trout.png,
-fish_catfish.png,
-fish_perch.png,
-fish_pike.png,
-fish_salmon.png,
-fish_walleye.png,
-fish_sunfish.png
-*/
-
 public final class SpriteProvider {
     private static final LruCache<String, Bitmap> CACHE =
             new LruCache<String, Bitmap>(4 * 1024 * 1024) {
@@ -29,23 +16,16 @@ public final class SpriteProvider {
     private static Integer speciesToResId(String species) {
         if (species == null) return null;
         String s = species.trim().toLowerCase();
-        /*
         switch (s) {
             case "bluegill": return R.drawable.fish_bluegill;
-            case "bass":     return R.drawable.fish_bass;
             case "carp":     return R.drawable.fish_carp;
-            case "trout":    return R.drawable.fish_trout;
             case "catfish":  return R.drawable.fish_catfish;
             case "perch":    return R.drawable.fish_perch;
             case "pike":     return R.drawable.fish_pike;
-            case "salmon":   return R.drawable.fish_salmon;
-            case "walleye":  return R.drawable.fish_walleye;
+            case "salmon":   return R.drawable.fish_shrimp;
             case "sunfish":  return R.drawable.fish_sunfish;
             default:         return null; // falls back to placeholder
         }
-
-         */
-        return null;
     }
 
 

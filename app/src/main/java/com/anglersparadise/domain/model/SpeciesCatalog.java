@@ -5,8 +5,8 @@ import java.util.Random;
 
 public final class SpeciesCatalog {
     private static final String[] NAMES = new String[]{
-            "Bluegill","Bass","Carp","Trout","Catfish",
-            "Perch","Pike","Salmon","Walleye","Sunfish"
+            "Bluegill","Shrimp","Carp","Catfish",
+            "Perch","Pike","Sunfish"
     };
     private static final Random RNG = new Random();
 
