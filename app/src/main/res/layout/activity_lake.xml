@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <!-- app/src/main/res/layout/activity_lake.xml -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -10,11 +9,31 @@
     android:padding="16dp"
     android:background="#101620">
 
-    <com.anglersparadise.ui.lake.LakeView
-        android:id="@+id/lakeCanvas"
+    <!-- Lake canvas + avatar overlay -->
+    <FrameLayout
+        android:id="@+id/lakeCanvasHolder"
         android:layout_width="match_parent"
         android:layout_height="260dp"
-        android:layout_marginBottom="12dp" />
+        android:layout_marginBottom="12dp">
+
+        <com.anglersparadise.ui.lake.LakeView
+            android:id="@+id/lakeCanvas"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent" />
+
+        <!-- Avatar -->
+        <ImageView
+            android:id="@+id/avatarBoat"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:layout_gravity="top|end"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/avatar_boat"
+            android:scaleType="centerInside"
+            android:contentDescription="@null" />
+    </FrameLayout>
 
     <TextView
         android:id="@+id/status"

@@ -22,7 +22,7 @@ public final class SpriteProvider {
             case "catfish":  return R.drawable.fish_catfish;
             case "perch":    return R.drawable.fish_perch;
             case "pike":     return R.drawable.fish_pike;
-            case "salmon":   return R.drawable.fish_shrimp;
+            case "shrimp":   return R.drawable.fish_shrimp;
             case "sunfish":  return R.drawable.fish_sunfish;
             default:         return null; // falls back to placeholder
         }
@@ -51,7 +51,6 @@ public final class SpriteProvider {
 
         if (base.getWidth() == w && base.getHeight() == h) return base;
 
-        // If sprites are pixel art and look blurry, use 'false' to avoid smoothing
         boolean smooth = true; // set to false for crisp nearest-neighbor
         return Bitmap.createScaledBitmap(base, w, h, smooth);
     }
