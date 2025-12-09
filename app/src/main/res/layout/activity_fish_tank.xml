@@ -14,7 +14,8 @@
         android:id="@+id/tankCanvas"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:layout_marginBottom="12dp" />
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/tank_bg" />
 
     <TextView
         android:id="@+id/count"
