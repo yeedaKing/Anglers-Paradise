@@ -1,7 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+<!-- res/values/themes.xml -->
 <resources>
-
-    <!-- Simple app theme using AppCompat defaults -->
-    <style name="Theme.AnglersParadise" parent="Theme.AppCompat.Light.DarkActionBar" />
-
+    <style name="Theme.AnglersParadise" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    </style>
 </resources>
