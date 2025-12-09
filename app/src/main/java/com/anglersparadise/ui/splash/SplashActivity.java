@@ -1,6 +1,7 @@
 // app/src/main/java/com/anglersparadise/ui/splash/SplashActivity.java
 package com.anglersparadise.ui.splash;
 
+import com.anglersparadise.R;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +15,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivitySplashBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        binding.logo.setImageResource(R.drawable.logo);
 
         binding.logo.setAlpha(0f);
         binding.logo.animate()

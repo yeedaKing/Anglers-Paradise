@@ -8,13 +8,14 @@
     android:layout_height="match_parent"
     android:background="#000000">
 
-    <!-- Use the app icon for now; swap to real logo later -->
     <ImageView
         android:id="@+id/logo"
         android:layout_width="128dp"
         android:layout_height="128dp"
         android:layout_gravity="center"
         android:contentDescription="@string/app_name"
-        android:src="@mipmap/ic_launcher" />
+        android:adjustViewBounds="true"
+        android:scaleType="centerInside"
+        android:src="@drawable/logo" />
 
 </FrameLayout>
